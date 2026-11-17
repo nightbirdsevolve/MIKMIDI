@@ -113,8 +113,9 @@ static NSMutableSet *registeredMIKMIDICommandSubclasses;
             break;
         }
         
-        // sizeof(MIDIPacketList) includes one MIDIPacket with a 1-byte data array,
-        // so subtract 1 to avoid double-counting when adding eventDataLength.
+        // sizeof(MIDIPacketList) already covers the list and packet headers plus a
+        // 256-byte data array, so this leaves room for eventDataLength bytes even
+        // for SysEx messages longer than 256 bytes.
         UInt32 bufferSize = (UInt32)(sizeof(MIDIPacketList) + eventDataLength - 1);
         MIDIPacketList *packetList = malloc(bufferSize);
         if (!packetList) break;
